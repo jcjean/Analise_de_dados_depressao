@@ -18,49 +18,51 @@ from geopy.geocoders import Nominatim
 df = pd.read_csv("student_depression_dataset.csv")
 
 st.markdown("# Análise de Dados - Estudantes e Depressão")
-st.write("### Visualização dos primeiros dados:")
+st.write("## Visualização dos primeiros dados:")
 st.write(df.head())
 #print(df.head())
 
 media_idade_depressao = df.query("Depression == 1")['Age'].mean() # faz a média de idade das pessoas com depressão
-st.write(f"Média de idade das pessoas com depressão: {media_idade_depressao:.2f} anos")
+st.write(f"### Média de idade das pessoas com depressão: {media_idade_depressao:.2f} anos")
 #print (media_idade_depressao)
 
 contagem_depressao_por_habito = df[df['Depression'] == 1].groupby('Dietary Habits')['Depression'].count()
 #print (contagem_depressao_por_habito)
 df_contagem_depressao_por_habito = contagem_depressao_por_habito.reset_index()
 df_contagem_depressao_por_habito.columns = ["Dietary Habits", "total"]
-st.write("Contagem de depressão por hábitos alimentares:")
+st.write("### Contagem de Estudantes com depressão por hábitos alimentares:")
 st.write(df_contagem_depressao_por_habito)
 
 media_sono_depressao = df[df['Depression'] == 1].groupby('Sleep Duration')['Depression'].count() # faz a contagem da hora de sono dos usuários com depressão
 #print (media_sono_depressao)
 df_media_sono_depressao = media_sono_depressao.reset_index()
 df_media_sono_depressao.columns = ["Sleep Duration", "total"]
-st.write("**Contagem de depressão por duração do sono:**")
+st.write("### Contagem de Estudantes com depressão  por duração do sono: ")
 st.write(df_media_sono_depressao)
 
 media_cidade_depressao = df[df['Depression'] == 1].groupby('City')['Depression'].count() # faz a contagem da hora de sono dos usuários com depressão
 #print (media_cidade_depressao)
 df_media_cidade_depressao = media_cidade_depressao.reset_index()
 df_media_cidade_depressao.columns = ["City", "total"]
-st.write("**Contagem de depressão por cidade:**")
+st.write("### Contagem de Estudantes com depressão pelas cidades da índia: ")
 st.write(df_media_cidade_depressao)
 
 df = df[~df['City'].isin(['City', '3.0'])].reset_index(drop=True) #limpando datafram retirando o nome de cidades não existentes
 
-st.markdown("## graficos")
+st.markdown("## Gráficos")
 
+st.markdown("## Gráfico de Contagem de Sono de Estudantes com Depressão")
 fig, ax = plt.subplots()
 sns.barplot(x="Sleep Duration", y="total", data = df_media_sono_depressao, ax=ax) #grafico contagem de sono de pessoas com depressao
-ax.set_title("Contagem de Sono de Pessoas com Depressão", pad=5)
+ax.set_title("Contagem de Sono de Estudantes com Depressão", pad=5)
 ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
 fig.tight_layout()
 st.pyplot(fig)
 
+st.markdown("## Gráfico de Contagem de Hábitos Alimentares de Estudantes com Depressão")
 fig2, ax = plt.subplots()
 sns.barplot(x="Dietary Habits", y="total", data = df_contagem_depressao_por_habito, ax=ax) #habitos alimentares de pessoas depressivas
-ax.set_title("Contagem de Sono de Pessoas com Depressão", pad=5)
+ax.set_title("Contagem de Hábitos Alimentares de Estudantes com Depressão", pad=5)
 ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
 fig2.tight_layout()
 st.pyplot(fig2)
@@ -86,8 +88,11 @@ df_coordenadas = pd.DataFrame(coordenadas, columns=['Latitude', 'Longitude'])
 #df_media_cidade_depressao = df_media_cidade_depressao.reset_index(drop=True)  # Reinicia o índice do DataFrame original
 df_com_coordenadas = pd.concat([df_media_cidade_depressao, df_coordenadas], axis=1).dropna()
 #st.write(df_com_coordenadas)
+st.write("### Mapa de distribuição de Estudantes com depressão pelas cidades da índia: ")
 
 mapa = px.density_mapbox(df_com_coordenadas, lon="Longitude", lat="Latitude", z= "total", mapbox_style="open-street-map", zoom = 3, radius= 20)
 mapa.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 st.plotly_chart(mapa)
 #mapa.show()
+
+st.markdown("#### Obrigada pela atenção! ✌🏽 ")
