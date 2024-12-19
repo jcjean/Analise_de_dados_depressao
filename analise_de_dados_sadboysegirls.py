@@ -54,7 +54,7 @@ ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
 fig.tight_layout()
 st.pyplot(fig)
 
-st.markdown("## Gráfico de Contagem de Hábitos Alimentares de Estudantes com Depressão")
+st.markdown("### Gráfico de Contagem de Hábitos Alimentares de Estudantes com Depressão")
 fig2, ax = plt.subplots()
 sns.barplot(x="Dietary Habits", y="total", data = df_contagem_depressao_por_habito, ax=ax) #habitos alimentares de pessoas depressivas
 ax.set_title("Contagem de Hábitos Alimentares de Estudantes com Depressão", pad=5)
@@ -63,7 +63,6 @@ fig2.tight_layout()
 st.pyplot(fig2)
 
 capitais = df_media_cidade_depressao['City'].dropna().unique().tolist()
-
 geolocator = Nominatim(user_agent="Coordenadas")
 
 coordenadas = []
@@ -78,7 +77,7 @@ for cidade in capitais:
         print(f"Erro ao geolocalizar a cidade {cidade}: {e}")
         coordenadas.append((cidade, None, None))
 
-# Cria DataFrame de coordenadas
+# Criando DataFrame de coordenadas
 df_coordenadas = pd.DataFrame(coordenadas, columns=['City', 'Latitude', 'Longitude'])
 df_com_coordenadas = pd.merge(df_media_cidade_depressao, df_coordenadas, on='City')
 df_com_coordenadas = df_com_coordenadas.dropna(subset=['Latitude', 'Longitude'])
