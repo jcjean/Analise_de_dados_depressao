@@ -20,21 +20,17 @@ df = pd.read_csv("student_depression_dataset.csv")
 st.markdown("# Análise de Dados - Estudantes e Depressão")
 st.write("## Visualização dos primeiros dados:")
 st.write(df.head())
-#print(df.head())
 
 media_idade_depressao = df.query("Depression == 1")['Age'].mean() # faz a média de idade das pessoas com depressão
 st.write(f"### Média de idade das pessoas com depressão: {media_idade_depressao:.2f} anos")
-#print (media_idade_depressao)
 
 contagem_depressao_por_habito = df[df['Depression'] == 1].groupby('Dietary Habits')['Depression'].count()
-#print (contagem_depressao_por_habito)
 df_contagem_depressao_por_habito = contagem_depressao_por_habito.reset_index()
 df_contagem_depressao_por_habito.columns = ["Dietary Habits", "total"]
 st.write("### Contagem de Estudantes com depressão por hábitos alimentares:")
 st.write(df_contagem_depressao_por_habito)
 
 media_sono_depressao = df[df['Depression'] == 1].groupby('Sleep Duration')['Depression'].count() # faz a contagem da hora de sono dos usuários com depressão
-#print (media_sono_depressao)
 df_media_sono_depressao = media_sono_depressao.reset_index()
 df_media_sono_depressao.columns = ["Sleep Duration", "total"]
 st.write("### Contagem de Estudantes com depressão  por duração do sono: ")
@@ -81,18 +77,17 @@ for cidade in capitais:
             coordenadas.append((None, None))  # Tratamento para casos onde geocodificação falha
     except Exception as e:
         print(f"Erro ao geolocalizar a cidade {cidade}: {e}")
-        coordenadas.append((None, None))  # Tratamento de exceções
+        coordenadas.append((None, None))
 
 # Criando um novo DataFrame com as cidades e suas respectivas coordenadas
 df_coordenadas = pd.DataFrame(coordenadas, columns=['Latitude', 'Longitude'])
-#df_media_cidade_depressao = df_media_cidade_depressao.reset_index(drop=True)  # Reinicia o índice do DataFrame original
 df_com_coordenadas = pd.concat([df_media_cidade_depressao, df_coordenadas], axis=1).dropna()
 #st.write(df_com_coordenadas)
 st.write("### Mapa de distribuição de Estudantes com depressão pelas cidades da índia: ")
 
-mapa = px.density_mapbox(df_com_coordenadas, lon="Longitude", lat="Latitude", z= "total", mapbox_style="open-street-map", zoom = 3, radius= 20)
+df_com_coordenadas['color'] = df_com_coordenadas['total']
+mapa = px.density_mapbox(df_com_coordenadas, lon="Longitude", lat="Latitude", color="color", z= "total", mapbox_style="open-street-map", zoom = 3, radius= 20)
 mapa.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 st.plotly_chart(mapa)
-#mapa.show()
 
 st.markdown("#### Obrigada pela atenção! ✌🏽 ")
