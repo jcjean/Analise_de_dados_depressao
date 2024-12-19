@@ -5,7 +5,9 @@
 * Distribuição de estudantes com depressão nas cidades da Índia;
 * Hábitos alimentares dos estudantes com depressão;
 #### A partir da análise desses dados podem ser verificadas relações entre sono irregular e depressão, bem como má alimentação e depressão. 
-#### Além de outras váriaveis como: infraestrutura e qualidade de vida da cidade e como ela pode impactar na condição mental desses estudantes. A partir do estudo também é viavél a analise de medidas públicas a serem tomadas em Cidades onde os níveis de Depressão são mais altos. 
+#### Além de outras váriaveis como: infraestrutura e qualidade de vida da cidade e como ela pode impactar na condição mental desses estudantes. A partir do estudo também é viável a analise de medidas públicas a serem tomadas em Cidades onde os níveis de Depressão são mais altos. 
+
+___________________________________________________________________________________________________________________
 
 #### Itens contidos: 
 
@@ -16,7 +18,7 @@
 | student_depression_dataset.csv | [Dataset](student_depression_dataset.csv)  | Dataset com os dados de estudantes da índia |
 
 
-#### Este repositório foi obtido via Kaggle, disponível em: [Student Depression Dataset](https://www.kaggle.com/datasets/hopesb/student-depression-dataset)*
+#### Este repositório foi obtido via Kaggle, disponível em: [Student Depression Dataset](https://www.kaggle.com/datasets/hopesb/student-depression-dataset)
 
 ##### Feito por:
 * ##### Gabriel Marques
