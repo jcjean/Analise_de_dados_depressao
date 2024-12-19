@@ -63,7 +63,7 @@ ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
 fig2.tight_layout()
 st.pyplot(fig2)
 
-capitais = df_media_cidade_depressao['City'].tolist()
+capitais = df_media_cidade_depressao['City'].dropna().unique().tolist()
 geolocator = Nominatim(user_agent="Coordenadas")
 
 coordenadas = []
@@ -72,16 +72,16 @@ for cidade in capitais:
         location = geolocator.geocode(cidade)
         if location:
             lat, lon = location.latitude, location.longitude
-            coordenadas.append((lat, lon))
+            coordenadas.append((cidade, lat, lon))
         else:
-            coordenadas.append((None, None))  # Tratamento para casos onde geocodificação falha
+            coordenadas.append((cidade, None, None))  # Tratamento para casos onde geocodificação falha
     except Exception as e:
         print(f"Erro ao geolocalizar a cidade {cidade}: {e}")
         coordenadas.append((None, None))
 
 # Criando um novo DataFrame com as cidades e suas respectivas coordenadas
-df_coordenadas = pd.DataFrame(coordenadas, columns=['Latitude', 'Longitude'])
-df_com_coordenadas = pd.concat([df_media_cidade_depressao, df_coordenadas], axis=1).dropna()
+df_com_coordenadas = pd.merge(df_media_cidade_depressao, df_coordenadas, on='City')
+df_com_coordenadas = df_com_coordenadas.dropna(subset=['Latitude', 'Longitude'])
 #st.write(df_com_coordenadas)
 st.write("### Mapa de distribuição de Estudantes com depressão pelas cidades da índia: ")
 
