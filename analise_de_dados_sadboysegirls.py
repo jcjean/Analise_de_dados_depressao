@@ -37,17 +37,16 @@ st.write("### Contagem de Estudantes com depressão  por duração do sono: ")
 st.write(df_media_sono_depressao)
 
 media_cidade_depressao = df[df['Depression'] == 1].groupby('City')['Depression'].count() # faz a contagem da hora de sono dos usuários com depressão
-#print (media_cidade_depressao)
 df_media_cidade_depressao = media_cidade_depressao.reset_index()
 df_media_cidade_depressao.columns = ["City", "total"]
 st.write("### Contagem de Estudantes com depressão pelas cidades da índia: ")
 st.write(df_media_cidade_depressao)
 
-df = df[~df['City'].isin(['City', '3.0'])].reset_index(drop=True) #limpando datafram retirando o nome de cidades não existentes
+df_media_cidade_depressao = df_media_cidade_depressao[df_media_cidade_depressao['City'].notna()]
 
 st.markdown("## Gráficos")
 
-st.markdown("## Gráfico de Contagem de Sono de Estudantes com Depressão")
+st.markdown("### Gráfico de Contagem de Sono de Estudantes com Depressão")
 fig, ax = plt.subplots()
 sns.barplot(x="Sleep Duration", y="total", data = df_media_sono_depressao, ax=ax) #grafico contagem de sono de pessoas com depressao
 ax.set_title("Contagem de Sono de Estudantes com Depressão", pad=5)
@@ -63,11 +62,12 @@ ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
 fig2.tight_layout()
 st.pyplot(fig2)
 
-capitais = df_media_cidade_depressao['City'].dropna().unique().tolist()
+#capitais = df_media_cidade_depressao['City'].dropna().unique().tolist()
+
 geolocator = Nominatim(user_agent="Coordenadas")
 
 coordenadas = []
-for cidade in capitais:
+for cidade in df_media_cidade_depressao['City']:
     try:
         location = geolocator.geocode(cidade)
         if location:
@@ -90,10 +90,10 @@ mapa = px.scatter_mapbox(
     lat="Latitude",
     color="total",
     size="total",
-    mapbox_style="open-street-map",
-    zoom=3
+    mapbox_style="carto-positron",
+    zoom=4
 )
 mapa.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-st.plotly_chart(mapa)
+st.plotly_chart(mapa, use_container_width=True)
 
 st.markdown("#### Obrigada pela atenção! ✌🏽 ")
