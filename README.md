@@ -24,4 +24,4 @@ ________________________________________________________________________________
 * ##### Gabriel Marques
 * ##### Isabela de Gondra
 * ##### Jean Charles
-* ##### Roseane
+* ##### Roseane Resende
