@@ -71,24 +71,29 @@ for cidade in capitais:
     try:
         location = geolocator.geocode(cidade)
         if location:
-            lat, lon = location.latitude, location.longitude
-            coordenadas.append((cidade, lat, lon))
+            coordenadas.append((cidade, location.latitude, location.longitude))
         else:
-            coordenadas.append((cidade, None, None))  # Tratamento para casos onde geocodificação falha
+            coordenadas.append((cidade, None, None))
     except Exception as e:
         print(f"Erro ao geolocalizar a cidade {cidade}: {e}")
-        coordenadas.append((None, None))
+        coordenadas.append((cidade, None, None))
 
+# Cria DataFrame de coordenadas
 df_coordenadas = pd.DataFrame(coordenadas, columns=['City', 'Latitude', 'Longitude'])
-# Criando um novo DataFrame com as cidades e suas respectivas coordenadas
 df_com_coordenadas = pd.merge(df_media_cidade_depressao, df_coordenadas, on='City')
 df_com_coordenadas = df_com_coordenadas.dropna(subset=['Latitude', 'Longitude'])
-#st.write(df_com_coordenadas)
-st.write("### Mapa de distribuição de Estudantes com depressão pelas cidades da índia: ")
 
-df_com_coordenadas['color'] = df_com_coordenadas['total']
-mapa = px.scatter_mapbox(df_com_coordenadas, lon="Longitude", lat="Latitude", color="color", size= "total", mapbox_style="open-street-map", zoom = 3)
-mapa.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+st.write("### Mapa de distribuição de Estudantes com depressão pelas cidades da Índia:")
+mapa = px.scatter_mapbox(
+    df_com_coordenadas,
+    lon="Longitude",
+    lat="Latitude",
+    color="total",
+    size="total",
+    mapbox_style="open-street-map",
+    zoom=3
+)
+mapa.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 st.plotly_chart(mapa)
 
 st.markdown("#### Obrigada pela atenção! ✌🏽 ")
