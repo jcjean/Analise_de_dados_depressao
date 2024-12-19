@@ -86,7 +86,7 @@ df_com_coordenadas = pd.concat([df_media_cidade_depressao, df_coordenadas], axis
 st.write("### Mapa de distribuição de Estudantes com depressão pelas cidades da índia: ")
 
 df_com_coordenadas['color'] = df_com_coordenadas['total']
-mapa = px.density_mapbox(df_com_coordenadas, lon="Longitude", lat="Latitude", color="color", z= "total", mapbox_style="open-street-map", zoom = 3, radius= 20)
+mapa = px.scatter_mapbox(df_com_coordenadas, lon="Longitude", lat="Latitude", color="color", size= "total", mapbox_style="open-street-map", zoom = 3)
 mapa.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 st.plotly_chart(mapa)
 
