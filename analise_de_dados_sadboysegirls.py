@@ -7,10 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1e13wane3IMD2oqNoz6xiFf1MchjRiLd6
 """
 
-
-
-"""Importando a base e bibliotecas"""
-
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -24,7 +20,7 @@ df = pd.read_csv("student_depression_dataset.csv")
 st.markdown("# Análise de Dados - Estudantes e Depressão")
 st.write("### Visualização dos primeiros dados:")
 st.write(df.head())
-print(df.head())
+#print(df.head())
 
 media_idade_depressao = df.query("Depression == 1")['Age'].mean() # faz a média de idade das pessoas com depressão
 st.write(f"Média de idade das pessoas com depressão: {media_idade_depressao:.2f} anos")
@@ -53,7 +49,7 @@ st.write(df_media_cidade_depressao)
 
 df = df[~df['City'].isin(['City', '3.0'])].reset_index(drop=True) #limpando datafram retirando o nome de cidades não existentes
 
-"""Graficos"""
+st.markdown("## graficos")
 
 fig, ax = plt.subplots()
 sns.barplot(x="Sleep Duration", y="total", data = df_media_sono_depressao, ax=ax) #grafico contagem de sono de pessoas com depressao
@@ -89,12 +85,9 @@ for cidade in capitais:
 df_coordenadas = pd.DataFrame(coordenadas, columns=['Latitude', 'Longitude'])
 #df_media_cidade_depressao = df_media_cidade_depressao.reset_index(drop=True)  # Reinicia o índice do DataFrame original
 df_com_coordenadas = pd.concat([df_media_cidade_depressao, df_coordenadas], axis=1).dropna()
-st.write(df_com_coordenadas)
+#st.write(df_com_coordenadas)
 
-"""gráfico mapa"""
-
-mapa = px.density_mapbox(df_com_coordenadas, lon="Longitude", lat="Latitude", z= "total", mapbox_style="open-street-map",
-                         zoom = 3, radius= 20)
+mapa = px.density_mapbox(df_com_coordenadas, lon="Longitude", lat="Latitude", z= "total", mapbox_style="open-street-map", zoom = 3, radius= 20)
 mapa.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 st.plotly_chart(mapa)
-mapa.show()
+#mapa.show()
