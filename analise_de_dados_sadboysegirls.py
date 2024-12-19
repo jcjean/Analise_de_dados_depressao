@@ -62,12 +62,12 @@ ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
 fig2.tight_layout()
 st.pyplot(fig2)
 
-#capitais = df_media_cidade_depressao['City'].dropna().unique().tolist()
+capitais = df_media_cidade_depressao['City'].dropna().unique().tolist()
 
 geolocator = Nominatim(user_agent="Coordenadas")
 
 coordenadas = []
-for cidade in df_media_cidade_depressao['City']:
+for cidade in capitais:
     try:
         location = geolocator.geocode(cidade)
         if location:
@@ -90,8 +90,8 @@ mapa = px.scatter_mapbox(
     lat="Latitude",
     color="total",
     size="total",
-    mapbox_style="carto-positron",
-    zoom=4
+    mapbox_style="open-street-map",
+    zoom=3
 )
 mapa.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 st.plotly_chart(mapa, use_container_width=True)
