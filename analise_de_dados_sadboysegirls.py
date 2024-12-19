@@ -79,6 +79,7 @@ for cidade in capitais:
         print(f"Erro ao geolocalizar a cidade {cidade}: {e}")
         coordenadas.append((None, None))
 
+df_coordenadas = pd.DataFrame(coordenadas, columns=['City', 'Latitude', 'Longitude'])
 # Criando um novo DataFrame com as cidades e suas respectivas coordenadas
 df_com_coordenadas = pd.merge(df_media_cidade_depressao, df_coordenadas, on='City')
 df_com_coordenadas = df_com_coordenadas.dropna(subset=['Latitude', 'Longitude'])
